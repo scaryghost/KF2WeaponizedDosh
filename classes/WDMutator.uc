@@ -3,21 +3,14 @@ class WDMutator extends KFGame.KFMutator
 
 var() config float damageToDosh;
 
-function bool OverridePickupQuery(Pawn Other, class<Inventory> ItemClass, Actor Pickup, out byte bAllowPickup) {
-    local KFDroppedPickup_Cash cashPickup;
-
-    if (Pickup.IsA('KFDroppedPickup_Cash') && Other.IsA('KFPawn_Monster')) {
-        cashPickup= KFDroppedPickup_Cash(Pickup);
-        Other.TakeDamage(damageToDosh * cashPickup.CashAmount, Controller(cashPickup.TosserPRI.Owner), Pickup.Location, Pickup.Velocity, class'KFDT_Explosive');
-        cashPickup.PickedUpBy(Other);
-        bAllowPickup= 0;
-        return true;
+function bool CheckReplacement(Actor Other) {
+    if (KFPawn(Other) != None) {
+        KFPawn(Other).InventoryManagerClass=class'WDInventoryManager';
+    } else if (KFInventory_Money(Other) != None) {
+        KFInventory_Money(Other).DroppedPickupClass= class'DoshBomb';
+    } else if (DoshBomb(Other) != None) {
+        `Log("Setting " $ damageToDosh);
+        DoshBomb(Other).damageToDosh= damageToDosh;
     }
-
-    return super.OverridePickupQuery(Other, ItemClass, Pickup, bAllowPickup);
-}
-
-defaultproperties
-{
-    damageToDosh=1.0
+    return super.CheckReplacement(Other);
 }
