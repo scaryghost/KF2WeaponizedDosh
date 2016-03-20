@@ -3,6 +3,13 @@ class WDMutator extends KFGame.KFMutator
 
 var() config float damageToDosh;
 
+function PostBeginPlay() {
+    if (damageToDosh == 0) {
+        damageToDosh= 1.0;
+        SaveConfig();
+    }
+}
+
 function bool CheckReplacement(Actor Other) {
     if (KFPawn(Other) != None) {
         KFPawn(Other).InventoryManagerClass=class'WDInventoryManager';
