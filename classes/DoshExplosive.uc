@@ -1,6 +1,7 @@
-class DoshBomb extends KFDroppedPickup_Cash;
+class DoshExplosive extends KFDroppedPickup_Cash;
 
 var float damageToDosh;
+var class<DamageType> doshDamageType;
 
 auto state Pickup {
     /**
@@ -51,10 +52,14 @@ auto state Pickup {
 
 function GiveTo(Pawn P) {
     if (P.IsA('KFPawn_Monster')) {
-        `Log("Damage? " $ (damageToDosh * CashAmount));
-        P.TakeDamage(damageToDosh * CashAmount, Controller(TosserPRI.Owner), Location, Velocity, class'KFDT_Explosive');
+        P.TakeDamage(damageToDosh * CashAmount, Controller(TosserPRI.Owner), Location, Velocity, doshDamageType);
         PickedUpBy(P);
     } else {
         super.GiveTo(P);
     }
+}
+
+defaultproperties
+{
+    doshDamageType=class'DoshDamageType'
 }
