@@ -52,12 +52,12 @@ QueryHandlers=WebAdmin.QHDefaultsKF
 QueryHandlers=WebAdmin.WebAdminSystemSettings
 ```
 
-Replace the entry that says **WebAdmin.QHDefaultsKF** with **WeaponizedDosh.MutatorConfigHandler**
+Replace the entry that says **WebAdmin.QHDefaultsKF** with **WeaponizedDosh.QHMutatorConfigFix**
 
 ```ini
 [WebAdmin.WebAdmin]
 QueryHandlers=WebAdmin.QHCurrentKF
-QueryHandlers=WeaponizedDosh.MutatorConfigHandler
+QueryHandlers=WeaponizedDosh.QHMutatorConfigFix
 QueryHandlers=WebAdmin.WebAdminSystemSettings
 ```
 
