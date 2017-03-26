@@ -10,6 +10,7 @@ auto state Pickup {
     function bool ValidTouch(Pawn Other) {
         local Actor HitA;
         local vector HitLocation, HitNormal;
+        local TraceHitInfo HitInfo;
         local bool bHitWall;
 
         // Altering this condition to allow KFPawn_Monster objects to be considered a valid touch
@@ -23,8 +24,8 @@ auto state Pickup {
         }
 
         // make sure not touching through wall
-        foreach Other.TraceActors(class'Actor', HitA, HitLocation, HitNormal, MyCylinderComp.GetPosition() + vect(0,0,10), Other.Location/*, vect(1,1,1)*/) {
-            if (IsTouchBlockedBy(HitA)) {
+        foreach Other.TraceActors(class'Actor', HitA, HitLocation, HitNormal, MyCylinderComp.GetPosition() + vect(0,0,10), Other.Location, vect(1,1,1), HitInfo) {
+            if (IsTouchBlockedBy(HitA, HitInfo.HitComponent)) {
                 if (MyMeshComp == None) {
                     return false;
                 } else {
@@ -35,8 +36,8 @@ auto state Pickup {
         }
         if (bHitWall) {
             // fail only if wall between both cylinder and mesh center
-            foreach Other.TraceActors(class'Actor', HitA, HitLocation, HitNormal, MyMeshComp.Bounds.Origin + vect(0,0,10), Other.Location/*, vect(1,1,1)*/) {
-                if ( IsTouchBlockedBy(HitA) ) {
+            foreach Other.TraceActors(class'Actor', HitA, HitLocation, HitNormal, MyMeshComp.Bounds.Origin + vect(0,0,10), Other.Location, vect(1,1,1), HitInfo) {
+                if ( IsTouchBlockedBy(HitA, HitInfo.HitComponent) ) {
                     return false;
                 }
             }
